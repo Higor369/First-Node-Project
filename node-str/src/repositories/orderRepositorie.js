@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Order = mongoose.model('Order');
 
-exports.get = async() => {
+exports.get = async(data) => {
     var res = await Order
         .find({}, 'number status customer items')
         .populate('customer', 'name')

@@ -3,7 +3,9 @@ const router = express.Router();
 
 const controler = require(`../controlers/productsControler`);
 
- router.post('/', controler.post);
+const autenticador = require('../services/autorizador');
+
+ router.post('/',autenticador.authorize, controler.post);
 
  router.put('/:id', controler.put);
 router.get('/', controler.get);

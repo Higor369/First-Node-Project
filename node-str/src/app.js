@@ -1,8 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const config = require(`../cnfig`);
 
 const mongoose = require('mongoose');
-const uri = "mongodb+srv://higor:h7654321@cursonode-d79zs.azure.mongodb.net/test?retryWrites=true&w=majority";
+const uri = config.connectionString;
 
 mongoose.connect(uri, {
   useNewUrlParser: true,
@@ -23,6 +24,15 @@ const costumer = require('./routes/customerRoute');
 const order = require('./controlers/orderControler');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false})); //codifica url 
+
+
+//habilitando cors
+app.use(function (req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, x-access-token');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    next();
+});
 
 app.use('/customers', costumer);
 app.use(`/`, index); //barra como prefixo apenas

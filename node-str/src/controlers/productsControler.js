@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const Product = mongoose.model('Products');
 const validator = require('../validators/fluentValidator');
 const repositorie = require('../repositories/productsRepositories');
+const azure = require('azure-storage');
+const config = require('../../cnfig');
 
 exports.get = async(req,res,next) =>{ //exemplo com await com acesso ao repositorio
     try{
@@ -59,8 +61,28 @@ exports.post=(req,res,next) =>{ //rota padrao
         res.status(400).send(contract.errors()).end();
     }
 
+    try{
+        const blobSvc = azure.createBlobService(config.containerConnectionString);
+        let filename = guid.raw().toString() + '.jpg';
+        let rawdata = req.body.image;
+        let matches = rawdata.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+        let type = matches[1];
+        let buffer = new Buffer(matches[2], 'base64');
+
+        await blobSvc.createBlockBlobFromText('product-images', filename, buffer, {
+            contentType: type
+        }, function (error, result, response) {
+            if (error) {
+                filename = 'default-product.png'
+            }
+        });
+
+    }catch(e){
+        res.status(400).send(e)
+    }
+
     var product = new Product();
-    product.title = req.body.title;
+    product.title = req.body.title; //incompleto
 
     product.save().then(x=>{
         res.status(201).send(req.body);

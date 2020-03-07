@@ -3,9 +3,14 @@ const Customer = mongoose.model('Customer');
 const validator = require('../validators/fluentValidator');
 const repositorie = require('../repositories/orderRepositorie');
 const guid = require('guid');
+const authService = require('../services/autorizador');
 
 exports.post = async(req,res,next) => {
-    var data = req.body;
+
+
+    const token = req.body.token || req.query.token || req.headers['x-access-token'];
+    const data = await authService.decodeToken(token);
+
     data.number = guid.raw().substring(0,6);
     try{
         await repositorie.create({
