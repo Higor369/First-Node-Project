@@ -3,10 +3,14 @@ const router = express.Router();
 
 const controler = require(`../controlers/productsControler`);
 
-var create = router.post('/', controler.post);
+ router.post('/', controler.post);
 
-var put = router.put('/:id', controler.put);
+ router.put('/:id', controler.put);
+router.get('/', controler.get);
+router.get('/slug/:slug',controler.getBySlug);
+router.get('/id/:id', controler.getById);
+router.get('/tag/:tag', controler.getByTag);
+ router.delete('/:id',controler.delete);
 
-var del = router.delete('/:id',controler.delete);
 
 module.exports = router;

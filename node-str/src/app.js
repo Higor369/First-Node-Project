@@ -2,22 +2,21 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const mongoose = require('mongoose');
-const uri = "mongodb+srv://higor:<h7654321>@cursonode-d79zs.azure.mongodb.net/test?retryWrites=true&w=majority";
+const uri = "mongodb+srv://higor:h7654321@cursonode-d79zs.azure.mongodb.net/test?retryWrites=true&w=majority";
 
-mongoose.connect('mongodb://localhost/my_database', {
+mongoose.connect(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
 
-// const MongoClient = require('mongodb').MongoClient;
-// const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true  });
-// client.connect(err => {
-//     console.log('conectado com sucesso ao mongo')
-//  // const collection = client.db("test").collection("devices");
-//   // perform actions on the collection object
-//  // client.close();
-// });
+// const Cat = mongoose.model('Cat', { name: String });
 
+// const kitty = new Cat({ name: 'Zildjian' });
+// kitty.save().then(() => console.log('meow'));
+
+
+
+const Product = require('./models/products');
 const app = express();
 
 const router = express.Router();
