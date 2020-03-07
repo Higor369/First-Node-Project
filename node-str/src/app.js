@@ -14,22 +14,20 @@ mongoose.connect(uri, {
 // const kitty = new Cat({ name: 'Zildjian' });
 // kitty.save().then(() => console.log('meow'));
 
-
-
-const Product = require('./models/products');
 const app = express();
-
-const router = express.Router();
-
 
 //carrega rotas 
 const index = require(`./routes/index`);
 const products = require(`./routes/products`);
+const costumer = require('./routes/customerRoute');
+const order = require('./controlers/orderControler');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false})); //codifica url 
 
+app.use('/customers', costumer);
 app.use(`/`, index); //barra como prefixo apenas
 app.use('/products', products);
+app.use('/order', order);
 
 
 module.exports = app;
